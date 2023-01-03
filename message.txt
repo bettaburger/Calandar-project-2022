@@ -1,0 +1,382 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.time.DayOfWeek;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
+class gui {
+
+    String mond;
+    String tues;
+    String Wens;
+    String Thur;
+    String Frid;
+    String satu;
+    String sund;
+
+    public void mainWindow() { // Creating the main screen
+        // Creating the intial gui
+        JFrame mainGui = new JFrame("Classwork Organizer"); 
+
+        mainGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainGui.setSize(1080,720);
+        mainGui.getContentPane();
+        mainGui.setLayout(null);
+        
+        // Add text input box
+        // Text input box title
+        JLabel inName = new JLabel("Assignment Info");
+        inName.setFont(new Font("Arial", Font.PLAIN, 30));
+        inName.setSize(300,30);
+        inName.setLocation(30,20);
+        inName.setVisible(true);
+        mainGui.add(inName);
+
+        // Assignment Name Input
+        JLabel inAName = new JLabel("Assignment Name:");
+        inAName.setFont(new Font("Arial", Font.PLAIN, 20));
+        inAName.setSize(200,20);
+        inAName.setLocation(40, 60);
+        inAName.setVisible(true);
+        mainGui.add(inAName);
+        JTextArea inNt = new JTextArea();
+        inNt.setFont(new Font("Arial", Font.PLAIN, 20));
+        inNt.setSize(243,20);
+        inNt.setLocation(210, 60);
+        inNt.setVisible(true);
+        mainGui.add(inNt);
+
+        // Assignment Date Input
+        JLabel inDate = new JLabel("Assignment Due: M#       D#       Y#       Day of Week");
+        inDate.setFont(new Font("Arial", Font.PLAIN, 20));
+        inDate.setSize(500,40);
+        inDate.setLocation(40, 80);
+        inDate.setVisible(true);
+        mainGui.add(inDate);
+        // Date Month Box
+        JTextArea inDateM = new JTextArea();
+        inDateM.setFont(new Font("Arial", Font.PLAIN, 20));
+        inDateM.setSize(30,20);
+        inDateM.setLocation(225, 90);
+        inDateM.setVisible(true);
+        mainGui.add(inDateM);
+        // Date Day Box
+        JTextArea inDateD = new JTextArea();
+        inDateD.setFont(new Font("Arial", Font.PLAIN, 20));
+        inDateD.setSize(30,20);
+        inDateD.setLocation(295, 90);
+        inDateD.setVisible(true);
+        mainGui.add(inDateD);
+        // Date Year Box
+        JTextArea inDateY = new JTextArea();
+        inDateY.setFont(new Font("Arial", Font.PLAIN, 20));
+        inDateY.setSize(30,20);
+        inDateY.setLocation(360, 90);
+        inDateY.setVisible(true);
+        mainGui.add(inDateY);
+        // User Input Dow
+        Checkbox mondayC = new Checkbox("Monday");
+        mondayC.setBounds(40, 115, 70, 30);
+        Checkbox tuesdayC = new Checkbox("Tuesday");
+        tuesdayC.setBounds(120, 115, 70, 30);
+        Checkbox wensdayC = new Checkbox("Wensday");
+        wensdayC.setBounds(200, 115, 70, 30);
+        Checkbox thursdayC = new Checkbox("Thursday");
+        thursdayC.setBounds(280, 115, 70, 30);
+        Checkbox fridayC = new Checkbox("Friday");
+        fridayC.setBounds(360, 115, 60, 30);
+        Checkbox saturdayC = new Checkbox("Saturday");
+        saturdayC.setBounds(420, 115, 70, 30);
+        Checkbox sundayC = new Checkbox("Sunday");
+        sundayC.setBounds(500, 115, 70, 30);
+
+        mainGui.add(mondayC);
+        mainGui.add(tuesdayC);
+        mainGui.add(wensdayC);
+        mainGui.add(thursdayC);
+        mainGui.add(fridayC);
+        mainGui.add(saturdayC);
+        mainGui.add(sundayC);
+
+        // Assignment Discription
+        JLabel inDisc = new JLabel("Assignment Discription:");
+        inDisc.setFont(new Font("Arial", Font.PLAIN, 20));
+        inDisc.setSize(250,60);
+        inDisc.setLocation(40, 130);
+        inDisc.setVisible(true);
+        mainGui.add(inDisc);
+        // Textbox
+        JTextArea inDText = new JTextArea();
+        inDText.setFont(new Font("Arial", Font.PLAIN, 20));
+        inDText.setSize(250,60);
+        inDText.setLocation(250, 150);
+        inDText.setVisible(true);
+        mainGui.add(inDText);
+
+        // Create Button
+        JButton submit = new JButton("Submit");
+        submit.setFont(new Font("Arial", Font.PLAIN, 20));
+        submit.setSize(100,40);
+        submit.setLocation(50, 200);
+        submit.setVisible(true);
+        mainGui.add(submit);
+        
+        // Calender Button
+        JButton calen = new JButton("Submit");
+        calen.setFont(new Font("Arial", Font.PLAIN, 20));
+        calen.setSize(100,40);
+        calen.setLocation(50, 300);
+        calen.setVisible(true);
+        mainGui.add(calen);
+        
+        
+        // Starting the gui
+        mainGui.setVisible(true);
+
+        submit.addActionListener(e -> textInput(mainGui, calen, inNt, inDateM, inDateD, inDateY, inDText, mondayC, tuesdayC, wensdayC, thursdayC, fridayC, saturdayC, sundayC)); 
+        
+
+    }
+
+    public void textInput(JFrame mainGui, JButton calen, JTextArea inNt, JTextArea inDateM, JTextArea inDateD, JTextArea inDateY, JTextArea inDText, Checkbox mondayC, Checkbox tuesdayC, Checkbox wensdayC, Checkbox thursdayC, Checkbox fridayC, Checkbox saturdayC, Checkbox sundayC) {
+
+        String assignmentN = inNt.getText();
+        String assignmentD = inDText.getText();
+        
+
+        // Move to the day list to put on calender
+        final ArrayList<String> Monday = new ArrayList<String>();
+        final ArrayList<String> Tuesday = new ArrayList<String>();
+        final ArrayList<String> Wensday = new ArrayList<String>();
+        final ArrayList<String> Thursday = new ArrayList<String>();
+        final ArrayList<String> Friday = new ArrayList<String>();
+        final ArrayList<String> Saturday = new ArrayList<String>();
+        final ArrayList<String> Sunday = new ArrayList<String>();
+
+        String theDay;
+        String theMonth;
+        String theYear = inDateY.getText();
+
+        if (inDateD.getText().length() < 2) {
+            theDay = "0" + inDateD.getText();
+        } else {
+            theDay = inDateD.getText();
+        }
+
+        if (inDateM.getText().length() < 2) {
+            theMonth = "0" + inDateM.getText();
+        } else {
+            theMonth = inDateM.getText();
+        }
+
+        String dateinput = theDay + "-" + theMonth + "-" + theYear;
+
+        /* DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d-M-u", Locale.ENGLISH);
+        LocalDate date = LocalDate.parse(dateinput, dtf);
+        DayOfWeek dow = date.getDayOfWeek();
+        String strDay = dow.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String thedamnday = strDay;
+        System.out.println(strDay);
+        System.out.println("WHY" + thedamnday); */
+
+        //String thedamnday = "pain:";
+        //String strDay = "AAAAAAAAAAAAA";
+
+        String workname = assignmentN + " , " + assignmentD + " , " + dateinput;
+
+        if (mondayC.getState() == true) {
+            System.out.println(7);
+            Monday.add(workname);
+            System.out.println(Monday);
+
+        } else if (tuesdayC.getState() == true) {
+            System.out.println(6);
+            Tuesday.add(workname);
+            System.out.println(Tuesday);
+
+        } else if (wensdayC.getState() == true) {
+            System.out.println(5);
+            Wensday.add(workname);
+            System.out.println(Wensday);
+
+        } else if (thursdayC.getState() == true) {
+            System.out.println(4);
+            Thursday.add(workname);
+            System.out.println(Thursday);
+
+        } else if (fridayC.getState() == true) {
+            System.out.println(3);
+            Friday.add(workname);
+            System.out.println(Friday);
+
+        } else if (saturdayC.getState() == true) {
+            System.out.println(2);
+            Saturday.add(workname);
+            System.out.println(Saturday);
+
+        } else if (sundayC.getState() == true) {
+            System.out.println(1);
+            Sunday.add(workname);
+            System.out.println(Sunday);
+        } 
+        // This is a comment
+
+        calen.addActionListener(e -> Calender(Monday, Tuesday, Wensday, Thursday, Friday, Saturday, Sunday, Sunday)); 
+    }    
+
+    
+
+    /*
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+     */
+
+    public void Calender(ArrayList<String> monday, ArrayList<String> tuesday, ArrayList<String> wensday, ArrayList<String> thursday, ArrayList<String> friday, ArrayList<String> saturday, ArrayList<String> sundaynew, ArrayList<String> sunday)
+{    
+JFrame frameObj = new JFrame();
+  
+JButton d1 = new JButton("Monday");
+d1.addActionListener(e -> Poop2(monday));
+
+JButton d2 = new JButton("Tuesday");
+d2.addActionListener(e -> Poop3(tuesday));
+
+JButton d3 = new JButton("Wednesday");
+d3.addActionListener(e -> Poop4(wensday));
+
+JButton d4 = new JButton("Thursday");
+d4.addActionListener(e -> Poop5(thursday));
+
+JButton d5 = new JButton("Friday");
+d5.addActionListener(e -> Poop6(friday));
+
+JButton d6 = new JButton("Saturday");
+d6.addActionListener(e -> Poop7(saturday));
+
+JButton d7 = new JButton("Sunday");
+d7.addActionListener(e -> Poop(sunday));
+
+frameObj.add(d7); frameObj.add(d1); frameObj.add(d2); frameObj.add(d3); frameObj.add(d4); frameObj.add(d5); frameObj.add(d6); 
+
+
+frameObj.setLayout(new GridLayout());
+  
+frameObj.setSize(700, 100);  
+frameObj.setVisible(true);    
+} 
+  
+//for Sunday Work
+  public void Poop(ArrayList<String> sunday) {
+    JFrame Sundaybox = new JFrame("Sunday Work");
+    Label c1;  
+  //adding inside labels
+    c1 = new Label("Class, Disc, Date: " + sunday);
+    c1.setBounds(20, 20, 100, 30);
+    Sundaybox.add(c1);
+    Sundaybox.setSize(1000,500);
+    Sundaybox.setLayout(null);
+    Sundaybox.setVisible(true);
+    
+    Sundaybox.setFocusable(false);
+    
+
+  }
+
+//for Monday Work
+    public void Poop2(ArrayList<String> monday) {
+    JFrame Mondaybox = new JFrame("Monday Work");
+    Label c1;  
+  //adding inside labels
+    c1 = new Label("Class, Disc, Date: " + monday);
+    c1.setBounds(20, 20, 500, 30);
+    Mondaybox.add(c1);
+    Mondaybox.setSize(1000,500);
+    Mondaybox.setLayout(null);
+    Mondaybox.setVisible(true);
+    
+    Mondaybox.setFocusable(false);
+  }
+
+  //for Tuesday Work
+    public void Poop3(ArrayList<String> tuesday) {
+    JFrame Tuesdaybox = new JFrame("Tuesday Work");
+    Label c1;  
+  //adding inside labels
+    c1 = new Label("Class, Disc, Date: " + tuesday);
+    c1.setBounds(20, 20, 500, 30);
+    Tuesdaybox.add(c1);
+    Tuesdaybox.setSize(1000,500);
+    Tuesdaybox.setLayout(null);
+    Tuesdaybox.setVisible(true);
+    
+    Tuesdaybox.setFocusable(false);
+  }
+
+  //for Wednesday Work
+    public void Poop4(ArrayList<String> wensday) {
+    JFrame Wednesdaybox = new JFrame("Wednesday Work");
+    Label c1;  
+  //adding inside labels
+    c1 = new Label("Class, Disc, Date: " + wensday);
+    c1.setBounds(20, 20, 500, 30);
+    Wednesdaybox.add(c1);
+    Wednesdaybox.setSize(1000,500);
+    Wednesdaybox.setLayout(null);
+    Wednesdaybox.setVisible(true);
+    
+    Wednesdaybox.setFocusable(false);
+    }
+
+  //for Thursday Work
+    public void Poop5(ArrayList<String> thursday) {
+    JFrame Thursdaybox = new JFrame("Thursday Work");
+    Label c1;  
+  //adding inside labels
+    c1 = new Label("Class, Disc, Date: " + thursday);
+    c1.setBounds(20, 20, 500, 30);
+    Thursdaybox.add(c1);
+    Thursdaybox.setSize(1000,500);
+    Thursdaybox.setLayout(null);
+    Thursdaybox.setVisible(true);
+    
+    Thursdaybox.setFocusable(false);
+  }
+
+  //for Friday Work
+    public void Poop6(ArrayList<String> friday) {
+    JFrame Fridaybox = new JFrame("Friday Work");
+    Label c1;  
+  //adding inside labels
+    c1 = new Label("Class, Disc, Date: " + friday);
+    c1.setBounds(20, 20, 500, 30);
+    Fridaybox.add(c1);
+    Fridaybox.setSize(1000,500);
+    Fridaybox.setLayout(null);
+    Fridaybox.setVisible(true);
+    
+    Fridaybox.setFocusable(false);
+    }
+
+  //for Saturday Work
+    public void Poop7(ArrayList<String> saturday) {
+    JFrame Saturdaybox = new JFrame("Saturday Work");
+        Label c1;  
+  //adding inside labels
+    c1 = new Label("Class, Disc, Date: " + saturday);
+    c1.setBounds(20, 20, 500, 30);
+    Saturdaybox.add(c1);
+    Saturdaybox.setSize(1000,500);
+    Saturdaybox.setLayout(null);
+    Saturdaybox.setVisible(true);
+    
+    Saturdaybox.setFocusable(false);
+  }
+}
+
+
